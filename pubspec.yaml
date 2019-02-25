@@ -26,6 +26,7 @@ dependencies:
   cached_network_image: ^0.5.1 # 占位图片
   carousel_slider: ^1.0.1 #轮播图
   photo: ^0.1.11 #相册选取
+  flutter_swiper : ^1.1.4 #轮播
 
 dev_dependencies:
   flutter_test:

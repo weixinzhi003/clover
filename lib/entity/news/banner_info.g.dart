@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'banner.dart';
+part of 'banner_info.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Banner _$BannerFromJson(Map<String, dynamic> json) {
-  return Banner(
+BannerInfo _$BannerInfoFromJson(Map<String, dynamic> json) {
+  return BannerInfo(
       id: json['id'] as int,
       title: json['title'] as String,
       imagePath: json['imagePath'] as String,
@@ -18,7 +18,8 @@ Banner _$BannerFromJson(Map<String, dynamic> json) {
       type: json['type'] as int);
 }
 
-Map<String, dynamic> _$BannerToJson(Banner instance) => <String, dynamic>{
+Map<String, dynamic> _$BannerInfoToJson(BannerInfo instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'imagePath': instance.imagePath,
@@ -29,18 +30,18 @@ Map<String, dynamic> _$BannerToJson(Banner instance) => <String, dynamic>{
       'type': instance.type
     };
 
-BannerResp _$BannerRespFromJson(Map<String, dynamic> json) {
-  return BannerResp(
-      json['user'] == null
+BannerInfoResp _$BannerInfoRespFromJson(Map<String, dynamic> json) {
+  return BannerInfoResp(
+      json['bannerInfo'] == null
           ? null
-          : Banner.fromJson(json['user'] as Map<String, dynamic>),
+          : BannerInfo.fromJson(json['bannerInfo'] as Map<String, dynamic>),
       json['errorCode'] as int,
       json['errorMsg'] as String);
 }
 
-Map<String, dynamic> _$BannerRespToJson(BannerResp instance) =>
+Map<String, dynamic> _$BannerInfoRespToJson(BannerInfoResp instance) =>
     <String, dynamic>{
       'errorCode': instance.errorCode,
       'errorMsg': instance.errorMsg,
-      'user': instance.user
+      'bannerInfo': instance.bannerInfo
     };

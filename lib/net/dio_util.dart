@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:clover/entity/net/base_resp.dart';
 import 'package:clover/net/api_urls.dart';
-import 'package:clover/net/service/api_code.dart';
+import 'package:clover/net/api_code.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 
 class DioUtil {
@@ -16,9 +17,15 @@ class DioUtil {
         connectTimeout: 8000,
         receiveTimeout: 3000,
         // dio库中默认将请求数据序列化为json，此处可根据后台情况自行修改
-      contentType: new ContentType('application', 'x-www-form-urlencoded',charset: 'utf-8')
+      contentType: new ContentType('application', 'x-www-form-urlencoded',charset: 'utf-8'),
     );
     _dio = new Dio(_options);
+    _dio.interceptor.request.onSend = (Options options){
+//      options.headers['Cookie'] = 'loginUserPassword=19871125; loginUserName_wanandroid_com=cindy168; token_pass_wanandroid_com=3f4b91304bd60c2cdc3916275e284bf7; JSESSIONID=F2E70527D4F856F616DF345C7049C495';
+      options.headers['Cookie'] = 'loginUserPassword=19871125; loginUserName_wanandroid_com=cindy168;';
+      //      options.headers['loginUserPassword'] = '123456';
+      return options;
+    };
   }
 
   static DioUtil getInstance() {
@@ -33,6 +40,7 @@ class DioUtil {
     Response resp;
     try{
       resp = await _dio.get(url, data: data, options:option, cancelToken: cancelToken);
+      print(resp.data);
       onRespRece(resp.data, callback);
     }on DioError catch(e){
       print(e);

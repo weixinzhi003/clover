@@ -1,3 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable()
 class TodoInfo extends TodoType {
 
   int id;
@@ -21,6 +24,7 @@ class TodoInfo extends TodoType {
 
 }
 
+@JsonSerializable()
 class TodoType {
 
   static const int type_work = 0;

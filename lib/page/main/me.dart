@@ -1,3 +1,4 @@
+import 'package:clover/page/setting/about_us.dart';
 import 'package:clover/page/user/todo/todo_home.dart';
 import 'package:clover/util/router_util.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ class _MeState extends State<Me> {
           child: Text('todo'),
           onTap: (){
             RouterUtil.openRouter(context, TodoHome());
+          },
+        ),
+        InkWell(
+          child: Text('About Us'),
+          onTap: (){
+            RouterUtil.openRouter(context, AboutUs());
           },
         )
       ],

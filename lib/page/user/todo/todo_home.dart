@@ -119,6 +119,7 @@ class _TodoHomeState extends State<TodoHome> {
   void onTypeTap(TodoType todoType){
     setState(() {
       curTodoType = todoType.type;
+      finishedList.onTypeChanged
     });
   }
 }

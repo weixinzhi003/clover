@@ -27,6 +27,7 @@ dependencies:
   carousel_slider: ^1.0.1 #轮播图
   photo: ^0.1.11 #相册选取
   flutter_swiper : ^1.1.4 #轮播
+  event_bus: ^1.0.3 #事件总线
 
 dev_dependencies:
   flutter_test:

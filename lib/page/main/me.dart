@@ -1,4 +1,6 @@
 import 'package:clover/page/setting/about_us.dart';
+import 'package:clover/page/test/communication.dart';
+import 'package:clover/page/test/customer_notification.dart';
 import 'package:clover/page/user/todo/todo_home.dart';
 import 'package:clover/util/router_util.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,18 @@ class _MeState extends State<Me> {
           child: Text('About Us'),
           onTap: (){
             RouterUtil.openRouter(context, AboutUs());
+          },
+        ),
+        InkWell(
+          child: Text('customer notification'),
+          onTap: (){
+            RouterUtil.openRouter(context, NotifyTestWidget());
+          },
+        ),
+        RaisedButton(
+          child: Text('customer notification'),
+          onPressed: (){
+            RouterUtil.openRouter(context, ParentWidget());
           },
         )
       ],

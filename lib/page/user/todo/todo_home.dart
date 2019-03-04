@@ -1,7 +1,10 @@
 import 'package:clover/entity/todo/todo_info.dart';
-import 'package:clover/net/dio_util.dart';
+import 'package:clover/event/customer_event.dart';
+import 'package:clover/page/user/todo/submit_todo_page.dart';
+import 'package:clover/util/router_util.dart';
 import 'package:clover/widget/divider/divider.dart';
 import 'package:flutter/material.dart';
+
 import 'todo_finished_list.dart';
 import 'todo_unfinished_list.dart';
 
@@ -13,8 +16,12 @@ class TodoHome extends StatefulWidget {
 class _TodoHomeState extends State<TodoHome> {
   List<TodoType> todoTypeList = [];
 
-  TodoUnfinishedList unfinishedList = TodoUnfinishedList();
-  TodoFinishedList finishedList = TodoFinishedList();
+  /*static int curTodoType = 0;
+
+  TodoUnfinishedList unfinishedList = TodoUnfinishedList(curTodoType);
+  TodoFinishedList finishedList = TodoFinishedList(curTodoType);*/
+
+  int curTodoType = 0;
 
   @override
   void initState() {
@@ -38,6 +45,25 @@ class _TodoHomeState extends State<TodoHome> {
           title: Text('事项清单'),
           centerTitle: true,
         ),
+        /*body: TodoTypeContext(
+          curTodoType: curTodoType,
+          child: Column(
+            children: <Widget>[
+              buildTodoType(),
+              TabBar(
+                labelColor: Colors.blueAccent,
+                unselectedLabelColor: Colors.black45,
+                tabs: <Widget>[Tab(text: '未完成'), Tab(text: '已完成')],
+              ),
+              LineDivider(),
+              Expanded(
+                child: TabBarView(
+                  children: <Widget>[unfinishedList, finishedList,],
+                ),
+              ),
+            ],
+          ),
+        ),*/
         body: Column(
           children: <Widget>[
             buildTodoType(),
@@ -49,7 +75,7 @@ class _TodoHomeState extends State<TodoHome> {
             LineDivider(),
             Expanded(
               child: TabBarView(
-                children: <Widget>[unfinishedList, finishedList,],
+                children: <Widget>[TodoUnfinishedList(curTodoType), TodoFinishedList(curTodoType),],
               ),
             ),
           ],
@@ -57,20 +83,11 @@ class _TodoHomeState extends State<TodoHome> {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              queryData();
+              RouterUtil.openRouter(context, SubmitTodoPage());
             }),
       ),
     );
   }
-
-  void queryData() {
-    DioUtil.getInstance().getWanAndroid(
-        'http://www.wanandroid.com/lg/todo/v2/list/1/json', (json) {
-      print(json);
-    });
-  }
-
-  int curTodoType = 0;
 
   Widget buildTodoType() {
     return Padding(
@@ -119,7 +136,28 @@ class _TodoHomeState extends State<TodoHome> {
   void onTypeTap(TodoType todoType){
     setState(() {
       curTodoType = todoType.type;
-      finishedList.onTypeChanged
+      eventBus.fire(OnTodoTypeChangedEvent(curTodoType));
     });
   }
+}
+
+class TodoTypeContext extends InheritedWidget{
+
+  int curTodoType;
+
+  TodoTypeContext({
+    Key key,
+    this.curTodoType,
+    @required Widget child,
+  }) : super(key: key, child: child);
+
+  static TodoTypeContext of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(TodoTypeContext);
+  }
+
+  @override
+  bool updateShouldNotify(TodoTypeContext oldWidget) {
+    return curTodoType != oldWidget.curTodoType;
+  }
+
 }

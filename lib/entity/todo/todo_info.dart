@@ -1,26 +1,40 @@
 import 'package:json_annotation/json_annotation.dart';
 
+part 'todo_info.g.dart';
+
 @JsonSerializable()
 class TodoInfo extends TodoType {
 
+  int userId;
   int id;
   String title;
   String content;
-  String date;
+  int date;
+  String dateStr;
+  int completeDate;
+  String completeDateStr;
   int priority; //优先级
   int status;
 
   TodoInfo({
+    this.userId,
     this.id,
     this.title,
     this.content,
     this.date,
+    this.dateStr,
+    this.completeDate,
+    this.completeDateStr,
     this.priority,
     this.status,
     int type,
     String typeIcon,
     String typeName,
   }) : super(type,typeIcon,typeName);
+
+  factory TodoInfo.fromJson(Map<String, dynamic> json) => _$TodoInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TodoInfoToJson(this);
 
 }
 
@@ -38,7 +52,9 @@ class TodoType {
 
   const TodoType(this.type, this.typeIcon, this.typeName);
 
+  factory TodoType.fromJson(Map<String, dynamic> json) => _$TodoTypeFromJson(json);
 
+  Map<String, dynamic> toJson() => _$TodoTypeToJson(this);
 }
 
 class TodoTypes {

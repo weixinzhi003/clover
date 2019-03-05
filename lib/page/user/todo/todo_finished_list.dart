@@ -30,15 +30,29 @@ class _TodoFinishedListState extends State<TodoFinishedList> with AutomaticKeepA
     });
   }
 
+  bool isFinished = false;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('已完成:type=$type'),
+    return Column(
+      children: <Widget>[
+        Container(
+          child: Text('已完成:type=$type'),
+        ),
+        Checkbox(
+          value: isFinished,
+          onChanged: (value){
+            setState(() {
+              isFinished = value;
+            });
+          },
+        )
+      ],
     );
   }
 
   void queryData() {
-    String url = 'http://www.wanandroid.com/lg/todo/v2/list/$type/json';
+    String url = 'http://www.wanandroid.com/lg/todo/v2/list/$type/json?status=1';
     DioUtil.getInstance().getWanAndroid(
         url, (json) {
       print(json);

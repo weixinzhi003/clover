@@ -40,7 +40,6 @@ class DioUtil {
     Response resp;
     try{
       resp = await _dio.get(url, data: data, options:option, cancelToken: cancelToken);
-      print(resp.data);
       onRespRece(resp.data, callback);
     }on DioError catch(e){
       print(e);

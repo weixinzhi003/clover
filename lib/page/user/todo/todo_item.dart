@@ -1,12 +1,19 @@
 import 'package:clover/entity/todo/todo_info.dart';
 import 'package:flutter/material.dart';
 
-class TodoItem extends StatelessWidget {
+class TodoItem extends StatefulWidget {
 
   TodoInfo todoInfo;
 
   TodoItem(this.todoInfo);
 
+  @override
+  TodoItemState createState() {
+    return new TodoItemState();
+  }
+}
+
+class TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,11 +26,11 @@ class TodoItem extends StatelessWidget {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  Text(todoInfo.title),
-                  Text(todoInfo.content),
+                  Text(widget.todoInfo.title),
+                  Text(widget.todoInfo.content),
                   Row(
                     children: <Widget>[
-                      Text('创建：${todoInfo.date}')
+                      Text('创建：${widget.todoInfo.date}')
                     ],
                   )
                 ],
@@ -36,12 +43,10 @@ class TodoItem extends StatelessWidget {
     );
   }
 
-  //修改状态为已完成
   void doneTodo(){
 
   }
 
-  //删除todo
   void deleteTodo(){
 
   }

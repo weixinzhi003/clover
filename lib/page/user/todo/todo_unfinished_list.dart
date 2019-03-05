@@ -3,79 +3,106 @@ import 'package:clover/entity/todo/todo_info.dart';
 import 'package:clover/net/dio_util.dart';
 import 'package:clover/page/user/todo/todo_home.dart';
 import 'package:clover/page/user/todo/todo_item.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:clover/event/customer_event.dart';
 
 class TodoUnfinishedList extends StatefulWidget {
-
   int type;
 
   TodoUnfinishedList(this.type);
 
   @override
-  _TodoUnfinishedListState createState() => _TodoUnfinishedListState();
+  TodoUnfinishedListState createState() => TodoUnfinishedListState();
 }
 
-class _TodoUnfinishedListState extends State<TodoUnfinishedList> with AutomaticKeepAliveClientMixin{
-
+class TodoUnfinishedListState extends State<TodoUnfinishedList>
+    with AutomaticKeepAliveClientMixin {
   int type = 0;
   int curPage = 0;
   List<TodoInfo> todoInfoList = [];
 
-  bool isLoading;
-  Page page;
+  bool isLoading = false;
+  Page curPageInfo = new Page(over: false);
+
+  ScrollController scrollController = ScrollController();
+  CancelToken cancelToken = new CancelToken();
 
   @override
   void initState() {
     super.initState();
-    this.type = this.widget.type;
-    eventBus.on<OnTodoTypeChangedEvent>().listen((event){
-      if(mounted){
-        setState(() {
-          type = event.todoType;
-        });
-        print("type:$type");
+    initData(this.widget.type);
+    scrollController.addListener((){
+      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
         queryData();
+      }
+    });
+    eventBus.on<OnTodoTypeChangedEvent>().listen((event) {
+      if (mounted) {
+        initData(event.todoType);
       }
     });
   }
 
+  void initData(int type) {
+    this.type = type;
+    curPage = 0;
+    isLoading = false;
+    curPageInfo = new Page(over: false);
+    queryData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Text('未完成:type=$type'),
-        ),
-        Expanded(
-          child: ListView.builder(itemBuilder: (context, index){
-            return TodoItem(todoInfoList[index]);
-          }, itemCount: todoInfoList.length,),
-        )
-      ],
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return buildTodoItem(index);
+      },
+      itemCount: todoInfoList.length,
+      controller: scrollController,
     );
-    return ListView.builder(itemBuilder: (context, index){
-      return TodoItem(todoInfoList[index]);
-    }, itemCount: todoInfoList.length,);
   }
 
   void queryData() {
 //    String url = 'http://www.wanandroid.com/lg/todo/v2/list/$curPage/json?status=0&type=$type';
-    String url = 'http://www.wanandroid.com/lg/todo/v2/list/1/json?status=0&type=0';
-    DioUtil.getInstance().getWanAndroid(
-        url, (json) {
+    if (isLoading || curPageInfo.over) {
+      return;
+    }
+    int targetPageIndex = curPage + 1;
+    int status = getTodoInfoStatus();
+    String url =
+        'http://www.wanandroid.com/lg/todo/v2/list/$targetPageIndex/json?status=$status&type=$type';
+    DioUtil.getInstance().getWanAndroid(url, (json) {
       print(json);
-          Page page = Page.fromJson(json);
-      curPage = page.curPage;
-      List<TodoInfo> newData = page.datas.map((todoInfoJson){
+      curPageInfo = Page.fromJson(json);
+      curPage = curPageInfo.curPage;
+      List<TodoInfo> newData = curPageInfo.datas.map((todoInfoJson) {
         return TodoInfo.fromJson(todoInfoJson);
       }).toList();
-      setState(() {
-        todoInfoList.addAll(newData);
-      });
-    });
+      //如果是第一页，则清除旧数据
+      if (curPage == 1) {
+        todoInfoList.clear();
+      }
+      todoInfoList.addAll(newData);
+      setState(() {});
+    }, cancelToken: cancelToken);
+  }
+
+  @override
+  void dispose() {
+    cancelToken.cancel('cancelled');
+    super.dispose();
   }
 
   @override
   bool get wantKeepAlive => true;
+
+
+  int getTodoInfoStatus(){
+    return TodoInfo.STATUS_UNDONE;
+  }
+
+  Widget buildTodoItem(int index){
+    return TodoItem(todoInfoList[index]);
+  }
 }

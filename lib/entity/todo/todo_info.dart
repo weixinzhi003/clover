@@ -5,6 +5,9 @@ part 'todo_info.g.dart';
 @JsonSerializable()
 class TodoInfo extends TodoType {
 
+  static const int STATUS_UNDONE = 0;//未完成
+  static const int STATUS_DONE = 1;//已完成
+
   int userId;
   int id;
   String title;
@@ -41,12 +44,12 @@ class TodoInfo extends TodoType {
 @JsonSerializable()
 class TodoType {
 
-  static const int type_work = 0;
-  static const int type_study = 1;
-  static const int type_life = 2;
-  static const int type_ent = 3;
+  static const int type_work = 1;
+  static const int type_study = 2;
+  static const int type_life = 3;
+  static const int type_ent = 4;
 
-  final int type; //类别 工作0；学习1；生活2； 娱乐3
+  final int type; //类别 工作1；学习2；生活3； 娱乐4
   final String typeIcon;
   final String typeName;
 

@@ -21,7 +21,7 @@ class _TodoHomeState extends State<TodoHome> {
   TodoUnfinishedList unfinishedList = TodoUnfinishedList(curTodoType);
   TodoFinishedList finishedList = TodoFinishedList(curTodoType);*/
 
-  int curTodoType = 0;
+  int curTodoType = 1;
 
   @override
   void initState() {

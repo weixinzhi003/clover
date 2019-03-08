@@ -6,9 +6,15 @@ import 'package:clover/util/toast_util.dart';
 import 'package:clover/widget/divider/divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:clover/event/customer_event.dart';
 
 //创建提交todo
 class SubmitTodoPage extends StatefulWidget {
+
+  TodoType todoType;
+
+  SubmitTodoPage(this.todoType);
+
   @override
   _SubmitTodoPageState createState() => _SubmitTodoPageState();
 }
@@ -24,13 +30,13 @@ class _SubmitTodoPageState extends State<SubmitTodoPage> {
   void initState() {
     super.initState();
     todoInfo = new TodoInfo();
-    curTodoType = TodoTypes.work;
     todoTypeList = [
       TodoTypes.work,
       TodoTypes.study,
       TodoTypes.life,
       TodoTypes.ent,
     ];
+    curTodoType = widget.todoType;
     todoInfo.completeDateStr = "${now.year}-${now.month}-${now.day}";
   }
 
@@ -196,6 +202,7 @@ class _SubmitTodoPageState extends State<SubmitTodoPage> {
     TodoService.addTodo(todoInfo, curTodoType.type, (json){
 //      print(json);
       ToastUtil.show(context, "提交成功", );
+      eventBus.fire(OnTodoAddEvent(todoInfo));
       setState(() {
         formState.reset();
       });

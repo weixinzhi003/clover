@@ -1,4 +1,9 @@
+import 'package:clover/entity/net/page.dart';
+import 'package:clover/entity/todo/todo_info.dart';
 import 'package:clover/net/dio_util.dart';
+import 'package:clover/page/user/todo/todo_finished_item.dart';
+import 'package:clover/page/user/todo/todo_unfinished_list.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:clover/event/customer_event.dart';
 
@@ -10,55 +15,108 @@ class TodoFinishedList extends StatefulWidget {
   TodoFinishedList(this.type);
 
   @override
-  _TodoFinishedListState createState() => _TodoFinishedListState();
+  TodoFinishedListState createState() => TodoFinishedListState();
 }
 
-class _TodoFinishedListState extends State<TodoFinishedList> with AutomaticKeepAliveClientMixin{
-
+class TodoFinishedListState extends State<TodoFinishedList> {
   int type = 0;
+  int curPage = 0;
+  List<TodoInfo> todoInfoList = [];
+
+  bool isLoading = false;
+  Page curPageInfo = new Page(over: false);
+
+  ScrollController scrollController = ScrollController();
+  CancelToken cancelToken = new CancelToken();
 
   @override
   void initState() {
     super.initState();
-    type = this.widget.type;
-    eventBus.on<OnTodoTypeChangedEvent>().listen((event){
+    initData(this.widget.type);
+    scrollController.addListener((){
+      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+        queryData();
+      }
+    });
+    eventBus.on<OnTodoTypeChangedEvent>().listen((event) {
+      if (mounted) {
+        initData(event.todoType);
+      }
+    });
+    //todo状态改变时刷新列表
+    eventBus.on<OnTodoStatusChangedEvent>().listen((event){
       if(mounted){
-        setState(() {
-          type = event.todoType;
-        });
+        initData(type);
+      }
+    });
+    //监听删除todo事件
+    eventBus.on<OnTodoDeleteEvent>().listen((event){
+      if (mounted) {
+        initData(type);
       }
     });
   }
 
-  bool isFinished = false;
+  void initData(int type) {
+    this.type = type;
+    curPage = 0;
+    isLoading = false;
+    curPageInfo = new Page(over: false);
+    queryData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Text('已完成:type=$type'),
-        ),
-        Checkbox(
-          value: isFinished,
-          onChanged: (value){
-            setState(() {
-              isFinished = value;
-            });
-          },
-        )
-      ],
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return buildTodoItem(index);
+      },
+      itemCount: todoInfoList.length,
+      controller: scrollController,
     );
   }
 
   void queryData() {
-    String url = 'http://www.wanandroid.com/lg/todo/v2/list/$type/json?status=1';
-    DioUtil.getInstance().getWanAndroid(
-        url, (json) {
-      print(json);
-    });
+//    String url = 'http://www.wanandroid.com/lg/todo/v2/list/$curPage/json?status=0&type=$type';
+    if (isLoading || curPageInfo.over) {
+      return;
+    }
+    int targetPageIndex = curPage + 1;
+    int status = getTodoInfoStatus();
+    String url =
+        'http://www.wanandroid.com/lg/todo/v2/list/$targetPageIndex/json?status=$status&type=$type';
+    DioUtil.getInstance().getWanAndroid(url, (json) {
+      curPageInfo = Page.fromJson(json);
+      curPage = curPageInfo.curPage;
+      List<TodoInfo> newData = curPageInfo.datas.map((todoInfoJson) {
+        return TodoInfo.fromJson(todoInfoJson);
+      }).toList();
+      //如果是第一页，则清除旧数据
+      setState(() {
+        if (curPage == 1) {
+          todoInfoList.clear();
+        }
+        todoInfoList.addAll(newData);
+      });
+    }, cancelToken: cancelToken);
+  }
+
+  @override
+  void dispose() {
+    cancelToken.cancel('cancelled');
+    super.dispose();
   }
 
   @override
   bool get wantKeepAlive => true;
+
+
+  int getTodoInfoStatus(){
+    return TodoInfo.STATUS_DONE;
+  }
+
+  Widget buildTodoItem(int index){
+    return TodoFinishedItem(todoInfoList[index]);
+  }
+
 }

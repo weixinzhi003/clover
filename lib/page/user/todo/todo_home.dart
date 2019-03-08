@@ -45,25 +45,6 @@ class _TodoHomeState extends State<TodoHome> {
           title: Text('事项清单'),
           centerTitle: true,
         ),
-        /*body: TodoTypeContext(
-          curTodoType: curTodoType,
-          child: Column(
-            children: <Widget>[
-              buildTodoType(),
-              TabBar(
-                labelColor: Colors.blueAccent,
-                unselectedLabelColor: Colors.black45,
-                tabs: <Widget>[Tab(text: '未完成'), Tab(text: '已完成')],
-              ),
-              LineDivider(),
-              Expanded(
-                child: TabBarView(
-                  children: <Widget>[unfinishedList, finishedList,],
-                ),
-              ),
-            ],
-          ),
-        ),*/
         body: Column(
           children: <Widget>[
             buildTodoType(),
@@ -83,7 +64,7 @@ class _TodoHomeState extends State<TodoHome> {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              RouterUtil.openRouter(context, SubmitTodoPage());
+              RouterUtil.openRouter(context, SubmitTodoPage(todoTypeList[curTodoType-1]));
             }),
       ),
     );

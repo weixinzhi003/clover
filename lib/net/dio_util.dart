@@ -37,9 +37,11 @@ class DioUtil {
 
   //wanandroid接口使用，
   void getWanAndroid(url, OnDataReceCallback callback, {data, option, cancelToken}) async {
+    print("dio url:$url");
     Response resp;
     try{
       resp = await _dio.get(url, data: data, options:option, cancelToken: cancelToken);
+      print(resp.data);
       onRespRece(resp.data, callback);
     }on DioError catch(e){
       print(e);
@@ -51,6 +53,7 @@ class DioUtil {
     Response resp;
     try{
       resp = await _dio.get(url, data: data, options:option, cancelToken: cancelToken);
+      print(resp.data);
       callback(resp.data);
     }on DioError catch(e){
       print(e);
@@ -59,9 +62,11 @@ class DioUtil {
 
   //wanandroid接口
   void postWanAndroid(String url, OnDataReceCallback callback, {data, option, cancelToken}) async{
+    print(url);
     Response resp;
     try{
       resp = await _dio.post(url, data: data, options:option, cancelToken: cancelToken);
+      print(resp.data);
       onRespRece(resp.data, callback);
     }on DioError catch(e){
       print(e);

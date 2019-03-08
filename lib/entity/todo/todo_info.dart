@@ -69,4 +69,6 @@ class TodoTypes {
       TodoType.type_life, "images/todo_life.png", "生活");
   static const TodoType ent = TodoType(
       TodoType.type_ent, "images/todo_ent.png", "娱乐");
+
+  static const List<TodoType> array = [work, study, life, ent];
 }

@@ -7,17 +7,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:clover/event/customer_event.dart';
 
-class TodoUnfinishedList extends StatefulWidget {
+class BaseTodoList extends StatefulWidget {
   int type;
 
-  TodoUnfinishedList(this.type);
+  BaseTodoList(this.type);
 
   @override
-  TodoUnfinishedListState createState() => TodoUnfinishedListState();
+  BaseTodoListState createState() => BaseTodoListState();
 }
 
-class TodoUnfinishedListState extends State<TodoUnfinishedList>
-{
+class BaseTodoListState extends State<BaseTodoList>
+    with AutomaticKeepAliveClientMixin {
   int type = 0;
   int curPage = 0;
   List<TodoInfo> todoInfoList = [];
@@ -37,30 +37,9 @@ class TodoUnfinishedListState extends State<TodoUnfinishedList>
         queryData();
       }
     });
-    //todo类型修改时重新请求数据
     eventBus.on<OnTodoTypeChangedEvent>().listen((event) {
       if (mounted) {
         initData(event.todoType);
-      }
-    });
-    //todo状态改变时刷新列表
-    eventBus.on<OnTodoStatusChangedEvent>().listen((event){
-      if(mounted){
-//        initData(type);
-        removeItem(event.todoInfo);
-      }
-    });
-    //监听删除todo事件
-    eventBus.on<OnTodoDeleteEvent>().listen((event){
-      if (mounted) {
-//        initData(type);
-        removeItem(event.todoInfo);
-      }
-    });
-    //监听新增todo事件
-    eventBus.on<OnTodoAddEvent>().listen((event){
-      if(mounted){
-        initData(type);
       }
     });
   }
@@ -94,19 +73,18 @@ class TodoUnfinishedListState extends State<TodoUnfinishedList>
     String url =
         'http://www.wanandroid.com/lg/todo/v2/list/$targetPageIndex/json?status=$status&type=$type';
     DioUtil.getInstance().getWanAndroid(url, (json) {
+      print(json);
       curPageInfo = Page.fromJson(json);
       curPage = curPageInfo.curPage;
       List<TodoInfo> newData = curPageInfo.datas.map((todoInfoJson) {
         return TodoInfo.fromJson(todoInfoJson);
       }).toList();
       //如果是第一页，则清除旧数据
-
-      setState(() {
-        if (curPage == 1) {
-          todoInfoList.clear();
-        }
-        todoInfoList.addAll(newData);
-      });
+      if (curPage == 1) {
+        todoInfoList.clear();
+      }
+      todoInfoList.addAll(newData);
+      setState(() {});
     }, cancelToken: cancelToken);
   }
 
@@ -126,14 +104,5 @@ class TodoUnfinishedListState extends State<TodoUnfinishedList>
 
   Widget buildTodoItem(int index){
     return TodoUnfinishedItem(todoInfoList[index]);
-  }
-
-  void removeItem(TodoInfo todoInfo){
-    print("removeItem:${todoInfo.toJson()}");
-    if(todoInfoList.contains(todoInfo)){
-      setState(() {
-        todoInfoList.remove(todoInfo);
-      });
-    }
   }
 }

@@ -17,3 +17,16 @@ class OnTodoStatusChangedEvent{
   OnTodoStatusChangedEvent(this.todoInfo);
 }
 
+//删除todo
+class OnTodoDeleteEvent{
+  TodoInfo todoInfo;
+
+  OnTodoDeleteEvent(this.todoInfo);
+}
+
+//新增Todo
+class OnTodoAddEvent{
+  TodoInfo todoInfo;
+
+  OnTodoAddEvent(this.todoInfo);
+}

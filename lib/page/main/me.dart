@@ -2,6 +2,7 @@ import 'package:clover/page/setting/about_us.dart';
 import 'package:clover/page/test/communication.dart';
 import 'package:clover/page/test/customer_notification.dart';
 import 'package:clover/page/test/inherit/parent_box.dart';
+import 'package:clover/page/test/test_list_view.dart';
 import 'package:clover/page/user/todo/todo_home.dart';
 import 'package:clover/util/router_util.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,12 @@ class _MeState extends State<Me> {
           child: Text('test Inherit Widget'),
           onPressed: (){
             RouterUtil.openRouter(context, TestInheritPage());
+          },
+        ),
+        RaisedButton(
+          child: Text('test listview update'),
+          onPressed: (){
+            RouterUtil.openRouter(context, TestListView());
           },
         )
       ],

@@ -42,7 +42,7 @@ class _TodoHomeState extends State<TodoHome> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('事项清单'),
+          title: Text('待办清单'),
           centerTitle: true,
         ),
         body: Column(

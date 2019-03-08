@@ -17,8 +17,18 @@ class User{
   List chapterTops;
   List collectIds;
 
+  //额外的，假的
+  String avatar = "https://upload-images.jianshu.io/upload_images/15781245-4219a73993bb7a7d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/500/format/webp";
+  String intro;//简介
+  int fansCount;//粉丝数量
+  int followCount;//关注数量
+  int postCount;//帖子数量
+  int favoriteCount;
+
   User({this.type, this.id, this.username, this.password, this.icon, this.email,
-      this.token, this.chapterTops, this.collectIds});
+      this.token, this.chapterTops, this.collectIds, this.avatar, this.intro,
+      this.fansCount, this.followCount, this.postCount,
+      this.favoriteCount}); //收藏数量
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

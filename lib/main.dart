@@ -1,6 +1,7 @@
 import 'package:clover/page/main/discovery.dart';
 import 'package:clover/page/main/me.dart';
 import 'package:clover/page/main/news_home.dart';
+import 'package:clover/page/social/girl_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +35,9 @@ class MyAppState extends State<MyApp>{
       body: new IndexedStack(
         index: _tabIndex,
         children: <Widget>[
-          new NewsHome(),
-          new Discovery(),
-          new Me()
+          NewsHome(),
+          GirlPage(),
+          Me()
         ],
       ),
 //      drawer: new MainDrawer(),
@@ -100,7 +101,7 @@ class MyAppState extends State<MyApp>{
   List<dynamic> tabImages;
 
 // 页面顶部的大标题（也是TabItem上的文本）
-  var appBarTitles = ['资讯', '动弹', '发现', '我的'];
+  var appBarTitles = ['资讯', '发现', '我的'];
   var tabBgColors = [Colors.red, Colors.green, Colors.deepPurpleAccent, Colors.grey];
 
 // 数据初始化，包括TabIcon数据和页面内容数据

@@ -40,6 +40,15 @@ class ApiUrls{
   }
 }
 
+class GankApiUrls{
+  static const int GANK_API_PAGE_COUNT = 10;
 
+//  static const String CHANNEL_NEWS_LIST = 'http://gank.io/api/data/$channelParam/$pageSize/$targetPage';
+
+  static String buildChannelNewsListUrl(String channelName, int pageIndex, {int pageCount}){
+    int count = pageCount == null ? GANK_API_PAGE_COUNT : pageCount;
+    return 'http://gank.io/api/data/$channelName/$count/$pageIndex';
+  }
+}
 
 

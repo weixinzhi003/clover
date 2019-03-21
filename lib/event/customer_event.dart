@@ -1,4 +1,5 @@
 import 'package:clover/entity/todo/todo_info.dart';
+import 'package:clover/entity/user/user.dart';
 import 'package:event_bus/event_bus.dart';
 
 EventBus eventBus = new EventBus();
@@ -29,4 +30,18 @@ class OnTodoAddEvent{
   TodoInfo todoInfo;
 
   OnTodoAddEvent(this.todoInfo);
+}
+
+//用户登录
+class OnLoginStatusChangedEvent{
+  User user;
+
+  OnLoginStatusChangedEvent(this.user);
+}
+
+//用户注册
+class OnRegisterEvent{
+  User user;
+
+  OnRegisterEvent(this.user);
 }

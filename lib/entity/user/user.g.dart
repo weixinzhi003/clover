@@ -16,7 +16,13 @@ User _$UserFromJson(Map<String, dynamic> json) {
       email: json['email'] as String,
       token: json['token'] as String,
       chapterTops: json['chapterTops'] as List,
-      collectIds: json['collectIds'] as List);
+      collectIds: json['collectIds'] as List,
+      avatar: json['avatar'] as String,
+      intro: json['intro'] as String,
+      fansCount: json['fansCount'] as int,
+      followCount: json['followCount'] as int,
+      postCount: json['postCount'] as int,
+      favoriteCount: json['favoriteCount'] as int);
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -28,7 +34,13 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'token': instance.token,
       'chapterTops': instance.chapterTops,
-      'collectIds': instance.collectIds
+      'collectIds': instance.collectIds,
+      'avatar': instance.avatar,
+      'intro': instance.intro,
+      'fansCount': instance.fansCount,
+      'followCount': instance.followCount,
+      'postCount': instance.postCount,
+      'favoriteCount': instance.favoriteCount
     };
 
 UserResp _$UserRespFromJson(Map<String, dynamic> json) {

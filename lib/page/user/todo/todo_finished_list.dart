@@ -67,13 +67,30 @@ class TodoFinishedListState extends State<TodoFinishedList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return buildTodoItem(index);
-      },
-      itemCount: todoInfoList.length,
-      controller: scrollController,
-    );
+    return buildContentWidget();
+  }
+
+  Widget buildContentWidget(){
+    if(todoInfoList.isEmpty){
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset("images/data_empty.png", width: 140,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('暂无数据', style: TextStyle(color: Colors.grey, fontSize: 16),),
+          )
+        ],
+      );
+    }else{
+      return ListView.builder(
+        itemBuilder: (context, index) {
+          return buildTodoItem(index);
+        },
+        itemCount: todoInfoList.length,
+        controller: scrollController,
+      );
+    }
   }
 
   void queryData() {

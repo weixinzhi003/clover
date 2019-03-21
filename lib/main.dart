@@ -1,7 +1,10 @@
 import 'package:clover/page/main/discovery.dart';
 import 'package:clover/page/main/me.dart';
 import 'package:clover/page/main/news_home.dart';
+import 'package:clover/page/setting/setting_page.dart';
 import 'package:clover/page/social/girl_page.dart';
+import 'package:clover/page/test/test_home_page.dart';
+import 'package:clover/util/user_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +29,7 @@ class MyAppState extends State<MyApp>{
   @override
   void initState() {
     super.initState();
+    initApplication();
     initData();
   }
 
@@ -35,7 +39,8 @@ class MyAppState extends State<MyApp>{
       body: new IndexedStack(
         index: _tabIndex,
         children: <Widget>[
-          NewsHome(),
+//          NewsHome(),//NewsHome会内存溢出，暂时不知道原因
+          TestHomePage(),
           GirlPage(),
           Me()
         ],
@@ -103,6 +108,10 @@ class MyAppState extends State<MyApp>{
 // 页面顶部的大标题（也是TabItem上的文本）
   var appBarTitles = ['资讯', '发现', '我的'];
   var tabBgColors = [Colors.red, Colors.green, Colors.deepPurpleAccent, Colors.grey];
+
+  void initApplication(){
+    UserUtil.init();
+  }
 
 // 数据初始化，包括TabIcon数据和页面内容数据
   void initData() {

@@ -2,7 +2,10 @@ import 'package:clover/entity/user/user.dart';
 import 'package:clover/net/api_urls.dart';
 import 'package:clover/net/dio_util.dart';
 import 'package:clover/net/service/login_service.dart';
+import 'package:clover/util/router_util.dart';
+import 'package:clover/util/user_util.dart';
 import 'package:flutter/material.dart';
+import 'package:clover/event/customer_event.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -24,6 +27,7 @@ class RegisterState extends State<Register> {
 
   String account;
   String psw;
+  bool isPswHide = true; //密码是否隐藏，默认隐藏
 
   @override
   void initState() {
@@ -52,15 +56,18 @@ class RegisterState extends State<Register> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(top: 55),
+              Padding(
+                padding: EdgeInsets.only(top: 55),
                 child: Image.asset(
                   pandaResName,
                   width: 125,
                   height: 120,
                   fit: BoxFit.contain,
-                ),),
+                ),
+              ),
               new Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 30),
+                  padding:
+                      EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 30),
                   child: new Form(
                     key: _loginFormKey,
                     child: new Column(
@@ -91,12 +98,19 @@ class RegisterState extends State<Register> {
                         ),
                         TextFormField(
                           focusNode: pswNode,
-                          obscureText: true,
+                          obscureText: isPswHide,
                           decoration: InputDecoration(
                             border: UnderlineInputBorder(
                                 borderSide: BorderSide(width: 0.5)),
                             contentPadding: EdgeInsets.all(10.0),
                             icon: Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                                icon: Icon(isPswHide ? Icons.visibility : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    isPswHide = !isPswHide;
+                                  });
+                                }),
                             labelText: '请输入密码',
                           ),
                           textInputAction: TextInputAction.done,
@@ -122,14 +136,12 @@ class RegisterState extends State<Register> {
                                 ),
                                 child: new Center(
                                   child: new Text(
-                                    '登录',
+                                    '注册',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16),
                                   ),
                                 )),
-                            onTap: () {
-                              onLoginClick();
-                            },
+                            onTap: register,
                           ),
                         )
                       ],
@@ -141,16 +153,16 @@ class RegisterState extends State<Register> {
                   children: <Widget>[
                     new Expanded(
                         child: Divider(
-                          color: Colors.grey,
-                        )),
+                      color: Colors.grey,
+                    )),
                     new Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text('第三方登录'),
+                      child: Text('第三方注册'),
                     ),
                     new Expanded(
                         child: Divider(
-                          color: Colors.grey,
-                        )),
+                      color: Colors.grey,
+                    )),
                   ],
                 ),
               ),
@@ -187,13 +199,17 @@ class RegisterState extends State<Register> {
         ));
   }
 
-  void onLoginClick(){
+  void register() {
     var form = _loginFormKey.currentState;
     if (form.validate()) {
       form.save();
-      LoginService.login(account, psw, (json){
+      LoginService.register(account, psw, (json) {
         User user = User.fromJson(json);
-        print('username:${user.username}');
+        user.password = psw;
+        UserUtil.onLogin(context, user);
+        eventBus.fire(OnRegisterEvent(user));
+        eventBus.fire(OnLoginStatusChangedEvent(user));
+        RouterUtil.back(context);
       });
     }
   }

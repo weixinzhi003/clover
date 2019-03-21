@@ -1,6 +1,6 @@
 import 'package:clover/entity/net/base_resp.dart';
 import 'package:json_annotation/json_annotation.dart';
-
+import 'dart:convert';
 part 'user.g.dart';
 
 @JsonSerializable()
@@ -33,6 +33,14 @@ class User{
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  @override
+  String toString() {
+    return json.encode(this);
+//    return '{type: $type, id: $id, username: $username, password: $password, icon: $icon, email: $email, token: $token, chapterTops: $chapterTops, collectIds: $collectIds, avatar: $avatar, intro: $intro, fansCount: $fansCount, followCount: $followCount, postCount: $postCount, favoriteCount: $favoriteCount}';
+  }
+
+
 }
 
 @JsonSerializable()

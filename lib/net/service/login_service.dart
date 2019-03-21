@@ -9,15 +9,32 @@ class LoginService{
     params['password'] = psw;
 
     DioUtil.getInstance().postWanAndroid(ApiUrls.LOGIN, callback, data: params);
+    //返回数据同注册
   }
 
-  static void register(String username, String psw, String repsw, OnDataReceCallback callback){
+  static void register(String username, String psw, OnDataReceCallback callback){
     Map<String, String> params = new Map();
     params['username'] = username;
     params['password'] = psw;
-    params['password'] = repsw;
+    params['repassword'] = psw;
 
-    DioUtil.getInstance().get(ApiUrls.REGISTER, callback, data: params);
+    DioUtil.getInstance().postWanAndroid(ApiUrls.REGISTER, callback, data: params);
+    //返回的数据
+    /*{
+      "data": {
+    "chapterTops": [],
+    "collectIds": [],
+    "email": "",
+    "icon": "",
+    "id": 20402,
+    "password": "",
+    "token": "",
+    "type": 0,
+    "username": "cindy169"
+    },
+    "errorCode": 0,
+    "errorMsg": ""
+  }*/
   }
 
   static void logout(OnDataReceCallback callback){

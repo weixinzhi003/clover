@@ -5,7 +5,7 @@ import 'package:clover/page/web/WebView.dart';
 import 'package:clover/util/router_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 
 
 class BannerView extends StatefulWidget {
@@ -36,14 +36,15 @@ class _BannerViewState extends State<BannerView> {
           return Stack(
             children: <Widget>[
               InkWell(
-                child: new CachedNetworkImage(
+                /*child: new CachedNetworkImage(
                   imageUrl: banner.imagePath,
                   placeholder: new Center(
                     child: new CircularProgressIndicator(),
                   ),
                   errorWidget: new Icon(Icons.error),
                   fit: BoxFit.cover,
-                ),
+                ),*/
+                child:Text("banner"),
                 onTap: (){
                   RouterUtil.openRouter(context, WebView(banner.title, banner.url));
                 },

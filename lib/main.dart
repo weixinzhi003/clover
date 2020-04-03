@@ -39,8 +39,8 @@ class MyAppState extends State<MyApp>{
       body: new IndexedStack(
         index: _tabIndex,
         children: <Widget>[
-//          NewsHome(),//NewsHome会内存溢出，暂时不知道原因
-          TestHomePage(),
+          NewsHome(),//NewsHome会内存溢出，暂时不知道原因
+//          TestHomePage(),
           GirlPage(),
           Me()
         ],

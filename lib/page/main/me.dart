@@ -46,7 +46,7 @@ class _MeState extends State<Me> {
     optionItems = [
       OptionItem("待办清单", 'images/user_fragment_my_assessment.png', (){
         RouterUtil.openRouter(context, TodoHome());
-      }),
+      }, isNeedLogin: true,),
       OptionItem("我的观点", 'images/user_fragment_opinion.png', (){
         RouterUtil.openRouter(context, Login());
       }),
@@ -147,8 +147,9 @@ class OptionItem extends StatelessWidget {
   String title;
   String iconPath;
   GestureTapCallback onTap;
+  bool isNeedLogin;//是否需要登录
 
-  OptionItem(this.title, this.iconPath, this.onTap);
+  OptionItem(this.title, this.iconPath, this.onTap, {this.isNeedLogin = false});
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +175,17 @@ class OptionItem extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onTap,
+      onTap: (){
+        onClick(context);
+      },
     );
+  }
+
+  void onClick(BuildContext context){
+    if(isNeedLogin && !UserUtil.isLogin()){
+      RouterUtil.openRouter(context, Login());
+    }else{
+      onTap();
+    }
   }
 }

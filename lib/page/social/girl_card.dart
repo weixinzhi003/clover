@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clover/entity/user/user.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 
 class GirlCard extends StatelessWidget {
   User user;
@@ -18,14 +18,15 @@ class GirlCard extends StatelessWidget {
       body: new Stack(
         children: <Widget>[
           new ConstrainedBox(
-            child: new CachedNetworkImage(
+            /*child: new CachedNetworkImage(
               imageUrl: user.avatar,
               placeholder: new Center(
                 child: new CircularProgressIndicator(),
               ),
               errorWidget: new Icon(Icons.error),
               fit: BoxFit.cover,
-            ),
+            ),*/
+            child:Text("defaultImgAssestName, fit: BoxFit.cover"),
             constraints: BoxConstraints.expand(),
           ),
           new Positioned(
@@ -48,12 +49,13 @@ class GirlCard extends StatelessWidget {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(22.5)),
                             border: new Border.all(color: Colors.white)),
-                        child: new ClipOval(
+                        /*child: new ClipOval(
                           child: new CachedNetworkImage(
                             imageUrl: user.avatar,
                             errorWidget: Icon(Icons.account_circle),
                           ),
-                        ),
+                        ),*/
+                        child:Text("CachedNetworkImage"),
                       ),
                       new Padding(
                         padding: EdgeInsets.only(left: 10),

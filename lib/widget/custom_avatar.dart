@@ -1,6 +1,6 @@
 import 'package:clover/util/text_util.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 
 class CustomAvatar extends StatelessWidget {
   String imgUrl;
@@ -44,11 +44,12 @@ class CustomAvatar extends StatelessWidget {
     if(TextUtil.isEmpty(imgUrl)){
       return Image.asset(defaultImgAssestName, fit: BoxFit.cover);
     }else{
-      return new CachedNetworkImage(
+      /*return new CachedNetworkImage(
         imageUrl: imgUrl,
         errorWidget: Image.asset(defaultImgAssestName),
         fit: BoxFit.cover,
-      );
+      );*/
+      return Image.asset(defaultImgAssestName, fit: BoxFit.cover);
     }
   }
 }

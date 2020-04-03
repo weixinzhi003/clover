@@ -35,7 +35,7 @@ class LoginState extends State<Login> {
     accountNode.addListener(onTextFieldChange);
     pswNode.addListener(onTextFieldChange);
 
-    eventBus.on<OnRegisterEvent>().listen((event){
+    eventBus.on<OnRegisterEvent>().listen((event) {
       RouterUtil.back(context);
     });
   }
@@ -155,7 +155,7 @@ class LoginState extends State<Login> {
                                     color: Colors.black54, fontSize: 14),
                               ),
                             ),
-                            onTap: (){
+                            onTap: () {
                               RouterUtil.openRouter(context, Register());
                             },
                           ),

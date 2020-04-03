@@ -5,8 +5,8 @@ class LoginService{
 
   static void login(String username, String psw, OnDataReceCallback callback){
     Map<String, String> params = new Map();
-    params['username'] = username;
-    params['password'] = psw;
+    params['username'] = username;//wxz
+    params['password'] = psw;//871125
 
     DioUtil.getInstance().postWanAndroid(ApiUrls.LOGIN, callback, data: params);
     //返回数据同注册

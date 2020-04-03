@@ -44,10 +44,10 @@ class CustomAvatar extends StatelessWidget {
     if(TextUtil.isEmpty(imgUrl)){
       return Image.asset(defaultImgAssestName, fit: BoxFit.cover);
     }else{
-      /*return new CachedNetworkImage(
+      /*return CachedNetworkImage(
         imageUrl: imgUrl,
-        errorWidget: Image.asset(defaultImgAssestName),
-        fit: BoxFit.cover,
+        errorWidget: (context, url, error) => Icon(Icons.error),
+        placeholder: (context, url) => CircularProgressIndicator()
       );*/
       return Image.asset(defaultImgAssestName, fit: BoxFit.cover);
     }
